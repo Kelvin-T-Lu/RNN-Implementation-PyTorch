@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
 
+
+# TODO https://github.com/QuinnDACollins/CS498DL/blob/main/assignment4_materials/assignment4_materials/rnn/model.py
 class RNN(nn.Module):
     def __init__(self, input_size, hidden_size, output_size, model_type="rnn", n_layers=1):
         super(RNN, self).__init__()
@@ -33,7 +35,11 @@ class RNN(nn.Module):
         ####################################
         #          YOUR CODE HERE          #
         ####################################
-
+        self.embedding  = torch.nn.Embedding(self.input_size, self.hidden_size)
+        self.rnn = torch.nn.RNN(self.input_size, self.hidden_size, self.n_layers)
+        self.gru = torch.nn.GRU(self.input_size, self.hidden_size, self.n_layers)
+        self.lstm = torch.nn.LSTM(self.input_size, self.hidden_size, self.n_layers)
+        self.linear = torch.nn.Linear(hidden_size, output_size)
         
         ##########       END      ##########
         
@@ -60,7 +66,18 @@ class RNN(nn.Module):
         ####################################
         #          YOUR CODE HERE          #
         ####################################
-
+        x = self.embedding(input)
+        x = x.view(1, input.size(0), -1)
+        if self.model_type == "rnn":
+          output, hidden = self.rnn(x, hidden)
+        elif self.model_type == "gru":
+          output, hidden = self.gru(x, hidden)
+        elif self.model_type == "lstm":
+          output, hidden = self.lstm(x, hidden)
+        ##########       END      ##########
+        
+        output = output.reshape(input.size(0), -1)
+        output = self.linear(output)
         
         ##########       END      ##########
         
@@ -85,8 +102,11 @@ class RNN(nn.Module):
         ####################################
         #          YOUR CODE HERE          #
         ####################################
-        
+        hidden = torch.zeros(self.n_layers, batch_size, self.hidden_size)
+        hidden = hidden.to(device)
 
+        if self.model_type == "lstm": 
+            return (hidden, hidden)
         ##########       END      ##########
 
         return hidden
