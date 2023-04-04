@@ -3,6 +3,7 @@ import torch.nn as nn
 
 
 # TODO https://github.com/QuinnDACollins/CS498DL/blob/main/assignment4_materials/assignment4_materials/rnn/model.py
+# TODO https://github.com/HaoranTang/Intro-Deep-Learning/blob/main/mp4/RNN/model.py
 class RNN(nn.Module):
     def __init__(self, input_size, hidden_size, output_size, model_type="rnn", n_layers=1):
         super(RNN, self).__init__()
