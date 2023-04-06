@@ -1,3 +1,8 @@
 2.4709 - RNN 
 2.5017 - LTSM
 2.5121 - GRN
+
+2.4793 - Batch Size 100
+2.4862 - batch size 500
+
+ lr = 0.001
